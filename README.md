@@ -39,6 +39,8 @@ All notifications are blackholed according to `alertmanager.yml` config.
 
 ## Grafana
 
+/grafana-postgres/environment/.gfenv
+
 To access service open following [link](http://localhost:3000).
 
 Default credential:
@@ -51,4 +53,9 @@ Grafana is provisioned by default with following entities:
 * VictoriaMetrics datasource
 * Prometheus datasource
 * VictoriaMetrics overview dashboard
+
+## Postgres
+
+/grafana-postgres/environment/.pgenv
+
 # grafana-postgres-vm
