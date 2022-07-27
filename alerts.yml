@@ -7,7 +7,7 @@ groups:
     rules:
       # note the `job` filter and update accordingly to your setup
       - alert: TooManyRestarts
-        expr: changes(process_start_time_seconds{job=~"victoriametrics|vmagent|vmalert"}[15m]) > 2
+        expr: changes(process_start_time_seconds{job=~"victoriametrics|vmagent|vmalert|nodeexporter"}[15m]) > 2
         labels:
           severity: critical
         annotations:
@@ -16,7 +16,7 @@ groups:
             It might be crashlooping."
 
       - alert: ServiceDown
-        expr: up{job=~"victoriametrics|vmagent|vmalert"} == 0
+        expr: up{job=~"victoriametrics|vmagent|vmalert|nodeexporter"} == 0
         for: 2m
         labels:
           severity: critical
