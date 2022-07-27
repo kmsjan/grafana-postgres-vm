@@ -2,7 +2,7 @@
 
 `docker compose up`
 
-
+test
 
 ## VictoriaMetrics
 
