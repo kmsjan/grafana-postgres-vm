@@ -1,10 +1,8 @@
-# Docker compose environment for VictoriaMetrics
+# grafana-postgres-vm
 
-To spin-up VictoriaMetrics, vmagent, vmalert, Alertmanager and Grafana run the following command:
+`docker compose up`
 
-`docker-compose up`
 
-For clustered version check [docker compose in cluster branch](https://github.com/VictoriaMetrics/VictoriaMetrics/tree/cluster/deployment/docker).
 
 ## VictoriaMetrics
 
@@ -39,6 +37,8 @@ All notifications are blackholed according to `alertmanager.yml` config.
 
 ## Grafana
 
+* /grafana-postgres/environment/.gfenv
+
 To access service open following [link](http://localhost:3000).
 
 Default credential:
@@ -51,4 +51,7 @@ Grafana is provisioned by default with following entities:
 * VictoriaMetrics datasource
 * Prometheus datasource
 * VictoriaMetrics overview dashboard
-# grafana-postgres-vm
+
+## Postgres
+
+* /grafana-postgres/environment/.pgenv
