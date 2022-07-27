@@ -5,7 +5,7 @@
 
 ## VictoriaMetrics
 
-VictoriaMetrics will be accessible on the following ports:
+VictoriaMetrics будет доступна на следующих портах:
 
 * `--graphiteListenAddr=:2003`
 * `--opentsdbListenAddr=:4242`
@@ -13,24 +13,24 @@ VictoriaMetrics will be accessible on the following ports:
 
 ## vmagent
 
-vmagent is used for scraping and pushing timeseries to
-VictoriaMetrics instance. It accepts Prometheus-compatible
-configuration `prometheus.yml` with listed targets for scraping.
+vmagent используется для очистки и отправки временных рядов в
+экземпляр VictoriaMetrics. Он принимает совместимые с Prometheus
+конфигурация `prometheus.yml` с перечисленными целями для очистки.
 
 [Web interface link](http://localhost:8429/).
 
 ## vmalert
 
-vmalert evaluates alerting rules (`alerts.yml`) to track VictoriaMetrics
-health state. It is connected with AlertManager for firing alerts,
-and with VictoriaMetrics for executing queries and storing alert's state.
+vmalert оценивает правила оповещения (`alerts.yml`) для отслеживания VictoriaMetrics
+состояние здоровья. Он связан с AlertManager для срабатывания оповещений,
+и с VictoriaMetrics для выполнения запросов и сохранения состояния предупреждений.
 
 [Web interface link](http://localhost:8880/).
 
 ## alertmanager
 
-AlertManager accepts notifications from `vmalert` and fires alerts.
-All notifications are blackholed according to `alertmanager.yml` config.
+AlertManager принимает уведомления от vmalert и запускает оповещения.
+Все уведомления блокируются в соответствии с конфигурацией `alertmanager.yml`.
 
 [Web interface link](http://localhost:9093/).
 
@@ -45,7 +45,7 @@ Default credential:
 * login - `admin`
 * password - `admin`
 
-Grafana is provisioned by default with following entities:
+Grafana по умолчанию снабжена следующими сущностями:
 
 * VictoriaMetrics datasource
 * Prometheus datasource
