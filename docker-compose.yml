@@ -36,6 +36,9 @@ services:
       - ./dashboards/victoriametrics.json:/var/lib/grafana/dashboards/vm.json
       - ./dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
       - ./dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
+      - ./dashboards/docker_containers.json:/var/lib/grafana/dashboards/docker_containers.json
+      - ./dashboards/docker_host.json:/var/lib/grafana/dashboards/docker_host.json
+      - ./dashboards/monitor_services.json:/var/lib/grafana/dashboards/monitor_services.json
     env_file: 
       - environment/.gfenv
     networks:
