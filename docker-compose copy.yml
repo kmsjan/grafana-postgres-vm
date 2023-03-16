@@ -4,29 +4,29 @@ volumes:
   vmagentdata: {}
   vmdata: {}
   grafanadata: {}
-  # postgresdata: {}
+  postgresdata: {}
 networks:
   vm_net:
 
 services:
-  # postgres:
-  #   container_name: postgres
-  #   image: postgres
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - postgresdata:/var/lib/postgresql/data
-  #   env_file: 
-  #     - environment/.pgenv
-  #   networks:
-  #     - vm_net
-  #   restart: always
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    env_file: 
+      - environment/.pgenv
+    networks:
+      - vm_net
+    restart: always
 
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
     depends_on:
-      # - "postgres"
+      - "postgres"
       - "victoriametrics"
     ports:
       - 3000:3000
@@ -35,10 +35,10 @@ services:
       - ./provisioning/:/etc/grafana/provisioning/
       - ./dashboards/victoriametrics.json:/var/lib/grafana/dashboards/vm.json
       - ./dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
-      # - ./dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
+      - ./dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
       - ./dashboards/nodeexporter.json:/var/lib/grafana/dashboards/nodeexporter.json
-    # env_file: 
-    #   - environment/.gfenv
+    env_file: 
+      - environment/.gfenv
     networks:
       - vm_net
     restart: always
@@ -78,46 +78,46 @@ services:
       - "--opentsdbListenAddr=:4242"
       - "--httpListenAddr=:8428"
       - "--influxListenAddr=:8089"
-      # - "--vmalert.proxyURL=http://vmalert:8880"
+      - "--vmalert.proxyURL=http://vmalert:8880"
     networks:
       - vm_net
     restart: always
   
-  # vmalert:
-  #   container_name: vmalert
-  #   image: victoriametrics/vmalert
-  #   depends_on:
-  #     - "victoriametrics"
-  #     - "alertmanager"
-  #   ports:
-  #     - 8880:8880
-  #   volumes:
-  #     - ./alerts.yml:/etc/alerts/alerts.yml
-  #   command:
-  #     - "--datasource.url=http://victoriametrics:8428/"
-  #     - "--remoteRead.url=http://victoriametrics:8428/"
-  #     - "--remoteWrite.url=http://victoriametrics:8428/"
-  #     - "--notifier.url=http://alertmanager:9093/"
-  #     - "--rule=/etc/alerts/*.yml"
-  #     # display source of alerts in grafana
-  #     - "--external.url=http://127.0.0.1:3000" #grafana outside container
-  #     - '--external.alert.source=explore?orgId=1&left=["now-1h","now","VictoriaMetrics",{"expr":"{{$$expr|quotesEscape|crlfEscape|queryEscape}}"},{"mode":"Metrics"},{"ui":[true,true,true,"none"]}]' ## when copypaste the line be aware of '$$' for escaping in '$expr'
-  #   networks:
-  #     - vm_net
-  #   restart: always
+  vmalert:
+    container_name: vmalert
+    image: victoriametrics/vmalert
+    depends_on:
+      - "victoriametrics"
+      - "alertmanager"
+    ports:
+      - 8880:8880
+    volumes:
+      - ./alerts.yml:/etc/alerts/alerts.yml
+    command:
+      - "--datasource.url=http://victoriametrics:8428/"
+      - "--remoteRead.url=http://victoriametrics:8428/"
+      - "--remoteWrite.url=http://victoriametrics:8428/"
+      - "--notifier.url=http://alertmanager:9093/"
+      - "--rule=/etc/alerts/*.yml"
+      # display source of alerts in grafana
+      - "--external.url=http://127.0.0.1:3000" #grafana outside container
+      - '--external.alert.source=explore?orgId=1&left=["now-1h","now","VictoriaMetrics",{"expr":"{{$$expr|quotesEscape|crlfEscape|queryEscape}}"},{"mode":"Metrics"},{"ui":[true,true,true,"none"]}]' ## when copypaste the line be aware of '$$' for escaping in '$expr'
+    networks:
+      - vm_net
+    restart: always
   
-  # alertmanager:
-  #   container_name: alertmanager
-  #   image: prom/alertmanager
-  #   volumes:
-  #     - ./alertmanager.yml:/config/alertmanager.yml
-  #   command:
-  #     - "--config.file=/config/alertmanager.yml"
-  #   ports:
-  #     - 9093:9093
-  #   networks:
-  #     - vm_net
-  #   restart: always
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager.yml:/config/alertmanager.yml
+    command:
+      - "--config.file=/config/alertmanager.yml"
+    ports:
+      - 9093:9093
+    networks:
+      - vm_net
+    restart: always
   
   nodeexporter:
     image: prom/node-exporter
@@ -132,6 +132,7 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart: always
+#    expose:
     ports:
       - 9100:9100
     networks:
